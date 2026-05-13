@@ -1,0 +1,813 @@
+[
+    {
+        "id": "a09955ce045c20b6",
+        "type": "tab",
+        "label": "IoT Dashboard ESP32",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "0f96e6d12787208e",
+        "type": "mqtt in",
+        "z": "a09955ce045c20b6",
+        "name": "Receive Data",
+        "topic": "iot/sensor/data",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 140,
+        "wires": [
+            [
+                "7360698524bb3d25",
+                "a08e17d7d071dd9f",
+                "a8cf073fb1f834aa",
+                "f5d42ecc118f4406",
+                "38b36e49810d36ab"
+            ]
+        ]
+    },
+    {
+        "id": "7360698524bb3d25",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Suhu",
+        "func": "msg.payload = msg.payload.suhu;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "26a16355e40cb289"
+            ]
+        ]
+    },
+    {
+        "id": "a08e17d7d071dd9f",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Kelembaban Udara",
+        "func": "msg.payload = msg.payload.kelembaban_udara;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "8024beda5babcb38",
+                "1657cffb6e0a1c24"
+            ]
+        ]
+    },
+    {
+        "id": "a8cf073fb1f834aa",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Kelembaban Tanah",
+        "func": "msg.payload = msg.payload.kelembaban_tanah;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 140,
+        "wires": [
+            [
+                "5d5f091d7b3ad00c"
+            ]
+        ]
+    },
+    {
+        "id": "f5d42ecc118f4406",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Status Pompa",
+        "func": "msg.payload = msg.payload.status_pompa === 1 ? \"MENYALA\" : \"MATI\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 180,
+        "wires": [
+            [
+                "78f80dcccfb9606f"
+            ]
+        ]
+    },
+    {
+        "id": "38b36e49810d36ab",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Format Query",
+        "func": "var data = msg.payload;\nmsg.topic = \"INSERT INTO sensor_data (suhu, kelembaban_udara, kelembaban_tanah, status_pompa, mode) VALUES (\" + data.suhu + \",\" + data.kelembaban_udara + \",\" + data.kelembaban_tanah + \",\" + data.status_pompa + \", '\" + data.mode + \"')\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 240,
+        "wires": [
+            [
+                "a08f726599415183"
+            ]
+        ]
+    },
+    {
+        "id": "26a16355e40cb289",
+        "type": "ui_chart",
+        "z": "a09955ce045c20b6",
+        "name": "",
+        "group": "ui_group_sensors",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Suhu (°C)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 560,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8024beda5babcb38",
+        "type": "ui_chart",
+        "z": "a09955ce045c20b6",
+        "name": "",
+        "group": "ui_group_sensors",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Kelembaban Udara (%)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#ff7f0e",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "x": 580,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5d5f091d7b3ad00c",
+        "type": "ui_gauge",
+        "z": "a09955ce045c20b6",
+        "name": "",
+        "group": "ui_group_sensors",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Kelembaban Tanah (%)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "30",
+        "seg2": "60",
+        "className": "",
+        "x": 570,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "78f80dcccfb9606f",
+        "type": "ui_text",
+        "z": "a09955ce045c20b6",
+        "group": "ui_group_control",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Status Pompa Air",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 570,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "1f12f54431f58a30",
+        "type": "ui_switch",
+        "z": "a09955ce045c20b6",
+        "name": "Pilih Mode",
+        "label": "Mode (Auto/Manual)",
+        "tooltip": "",
+        "group": "ui_group_control",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "manual",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "auto",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "cb52e131f1b226c9"
+            ]
+        ]
+    },
+    {
+        "id": "cd1feb60555581a3",
+        "type": "ui_switch",
+        "z": "a09955ce045c20b6",
+        "name": "Kontrol Pompa",
+        "label": "Nyalakan Pompa (Manual)",
+        "tooltip": "",
+        "group": "ui_group_control",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 140,
+        "y": 380,
+        "wires": [
+            [
+                "0162df2167333d95"
+            ]
+        ]
+    },
+    {
+        "id": "706e8b40236ef6f1",
+        "type": "ui_text_input",
+        "z": "a09955ce045c20b6",
+        "name": "Jadwal 1",
+        "label": "Jadwal 1 (HH:MM)",
+        "tooltip": "",
+        "group": "ui_group_control",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "time",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 120,
+        "y": 440,
+        "wires": [
+            [
+                "b19b8174b41bb0f9"
+            ]
+        ]
+    },
+    {
+        "id": "4f4abbf31ab50a8b",
+        "type": "ui_text_input",
+        "z": "a09955ce045c20b6",
+        "name": "Jadwal 2",
+        "label": "Jadwal 2 (HH:MM)",
+        "tooltip": "",
+        "group": "ui_group_control",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "time",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 120,
+        "y": 500,
+        "wires": [
+            [
+                "c941abc0ee71d7b4"
+            ]
+        ]
+    },
+    {
+        "id": "cb52e131f1b226c9",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Format JSON",
+        "func": "msg.payload = { \"mode\": msg.payload };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 320,
+        "wires": [
+            [
+                "104f1709323a0da0"
+            ]
+        ]
+    },
+    {
+        "id": "0162df2167333d95",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Format JSON",
+        "func": "msg.payload = { \"pump\": msg.payload };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 380,
+        "wires": [
+            [
+                "104f1709323a0da0"
+            ]
+        ]
+    },
+    {
+        "id": "b19b8174b41bb0f9",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Format JSON",
+        "func": "msg.payload = { \"schedule1\": msg.payload };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 440,
+        "wires": [
+            [
+                "104f1709323a0da0"
+            ]
+        ]
+    },
+    {
+        "id": "c941abc0ee71d7b4",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Format JSON",
+        "func": "msg.payload = { \"schedule2\": msg.payload };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 500,
+        "wires": [
+            [
+                "104f1709323a0da0"
+            ]
+        ]
+    },
+    {
+        "id": "104f1709323a0da0",
+        "type": "mqtt out",
+        "z": "a09955ce045c20b6",
+        "name": "Kirim Perintah",
+        "topic": "iot/control",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 580,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "b47e360d4bf7780f",
+        "type": "inject",
+        "z": "a09955ce045c20b6",
+        "name": "Tiap 10 Detik",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "SELECT * FROM sensor_data ORDER BY waktu_simpan DESC LIMIT 10;",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 620,
+        "wires": [
+            [
+                "7c3886fcb8ac83a2"
+            ]
+        ]
+    },
+    {
+        "id": "a08f726599415183",
+        "type": "mysql",
+        "z": "a09955ce045c20b6",
+        "mydb": "mysql_db",
+        "name": "Save to DB",
+        "x": 550,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c3886fcb8ac83a2",
+        "type": "mysql",
+        "z": "a09955ce045c20b6",
+        "mydb": "mysql_db",
+        "name": "Ambil Data Tabel",
+        "x": 350,
+        "y": 620,
+        "wires": [
+            [
+                "b10cde1cf6f73bf6"
+            ]
+        ]
+    },
+    {
+        "id": "b10cde1cf6f73bf6",
+        "type": "ui_table",
+        "z": "a09955ce045c20b6",
+        "group": "ui_group_table",
+        "name": "Tabel Histori",
+        "order": 1,
+        "width": 12,
+        "height": 12,
+        "columns": [
+            {
+                "field": "waktu_simpan",
+                "title": "Waktu",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "suhu",
+                "title": "Suhu",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "kelembaban_udara",
+                "title": "Kelembaban Udara",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "kelembaban_tanah",
+                "title": "Kelembaban Tanah",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "status_pompa",
+                "title": "Pompa (1=ON)",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "mode",
+                "title": "Mode",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 550,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "6149317c947ac7b4",
+        "type": "ui_switch",
+        "z": "a09955ce045c20b6",
+        "name": "",
+        "label": "Terjadwal",
+        "tooltip": "",
+        "group": "ui_group_control",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 120,
+        "y": 560,
+        "wires": [
+            [
+                "6421d2ebd0815263"
+            ]
+        ]
+    },
+    {
+        "id": "6421d2ebd0815263",
+        "type": "function",
+        "z": "a09955ce045c20b6",
+        "name": "Format JSON",
+        "func": "msg.payload = { \"schedule_enabled\": msg.payload };\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 560,
+        "wires": [
+            [
+                "104f1709323a0da0"
+            ]
+        ]
+    },
+    {
+        "id": "e7103824a0fc3bd5",
+        "type": "remote-access",
+        "z": "a09955ce045c20b6",
+        "confignode": "a4ac4275f5659701",
+        "name": "",
+        "verbose": 0,
+        "x": 860,
+        "y": 100,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1657cffb6e0a1c24",
+        "type": "ui_text",
+        "z": "a09955ce045c20b6",
+        "group": "ui_group_sensors",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Kelembapan udara",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "",
+        "fontSize": "30",
+        "color": "#000000",
+        "x": 790,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "HiveMQ",
+        "broker": "7bca26641abc4f9e9bebe7ce4647e2db.s1.eu.hivemq.cloud",
+        "port": "8883",
+        "tls": "a102c30455af92d8",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_group_sensors",
+        "type": "ui_group",
+        "name": "Sensor Monitoring",
+        "tab": "ui_tab1",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_control",
+        "type": "ui_group",
+        "name": "Control & Schedule",
+        "tab": "ui_tab1",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "mysql_db",
+        "type": "MySQLdatabase",
+        "name": "IoT Database",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "iot_monitoring",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "ui_group_table",
+        "type": "ui_group",
+        "name": "Database Data",
+        "tab": "ui_tab1",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "a4ac4275f5659701",
+        "type": "remote-config",
+        "name": "Node-RED UI",
+        "host": "localhost",
+        "protocol": "http",
+        "port": "1880",
+        "baseurl": "/ui",
+        "instancehash": "3l71fkwfqi4bgvugx1n3ot3b38teaabwlr97s5fdx0uzs34ty40jxiethn1s6xbl",
+        "server": "nodered05.remote-red.com",
+        "region": "sg"
+    },
+    {
+        "id": "a102c30455af92d8",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
+        "id": "ui_tab1",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "385ac8bbe97411ae",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-node-mysql": "3.0.0",
+            "node-red-node-ui-table": "0.4.5",
+            "node-red-contrib-remote": "2.0.5"
+        }
+    }
+]
